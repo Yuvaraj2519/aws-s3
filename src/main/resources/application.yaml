@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: aws
+
+aws:
+  key: { your aws key }
+  secret: {your aws secret}
+  s3:
+    bucket: { your bucket name }
