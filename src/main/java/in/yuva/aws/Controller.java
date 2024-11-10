@@ -1,5 +1,6 @@
 package in.yuva.aws;
 
+import com.amazonaws.services.s3.model.Bucket;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -8,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Log4j2
 @RestController
@@ -22,7 +25,12 @@ public class Controller {
 
     @GetMapping(Method.UP)
     public String health() {
-        return "OK";
+        List<Bucket> buckets = service.getBuckets();
+        StringBuilder bucketName = new StringBuilder();
+        for (Bucket bucket : buckets) {
+            bucketName.append(bucket.getName());
+        }
+        return "fectched : " + bucketName.toString();
     }
 
     @PostMapping(value = Method.UPLOAD, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

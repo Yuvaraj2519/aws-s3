@@ -1,6 +1,7 @@
 package in.yuva.aws;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Log4j2
 @org.springframework.stereotype.Service
@@ -20,6 +23,16 @@ public class Service {
 
     public Service(AmazonS3 s3client) {
         this.s3client = s3client;
+    }
+
+    public List<Bucket> getBuckets() {
+        List<Bucket> buckets = new ArrayList<Bucket>();
+        try{
+            buckets= s3client.listBuckets();
+        } catch (Exception e){
+            log.error(e);
+        }
+        return buckets;
     }
 
     public String uploadFile(String fileName, MultipartFile file) throws IOException {
